@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>GifTastic</title>
+    <link rel="stylesheet" href="style.css">
+    <style type="text/css">
+
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- Rendered buttons will get dumped Here  -->
+        <div id="buttons-view"></div>
+
+        <form id="action-form">
+            <label for="action-input">Add an action!</label>
+            <input type="text" id="action-input"><br>
+
+            <!-- Button triggers new action to be added -->
+            <input id="add-action" type="submit" value="Submit">
+        </form>
+
+        <!-- Gifs will get dumped here -->
+        <div id="gif-container"></div>
+
+
+
+    </div>
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Script -->
+    <script type="text/javascript" src="giftastic.js"></script>
+</body>
+
+</html>
