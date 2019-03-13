@@ -10,7 +10,7 @@ function displayGifs() {
     var apiKey = "98mhv5XsGca2pklqn8vGNCjrH3JUcAUc";
     var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + action + "&api_key=" + apiKey + "&limit=10";
 
-    // Creates AJAX call for the specific movie button being clicked
+    // Creates AJAX call for the specific action button being clicked
     $.ajax({
         url: queryURL,
         method: "GET"
@@ -19,47 +19,71 @@ function displayGifs() {
         var results = response.data;
 
         for (var i = 0; i < results.length; i++) {
-            // var imageUrl = response.data.url;
+            var actionDiv = $("<div class='action-div'>");
+            //
+            var actionImage = $("<img class='gif'>");
+            var p = $("<p class='rating-text'>");
+            // Set the inner text of the paragraph to the rating of the image in results[i].
+            p.text("Rating: " + results[i].rating);
 
-            //assigns variable to a blank image
-            var actionImage = $("<img>");
-
-            //adds images from API into the blank image variable assigned above
-            actionImage.attr("src", results[i].images.fixed_height.url);
+            //adds images from API into the blank image variable
+            
+            actionImage.attr("src", results[i].images.fixed_height_still.url);
             actionImage.attr("alt", "action image");
+            actionImage.attr("data-state", "still");
+            actionImage.attr("data-still", results[i].images.fixed_height_still.url);
+            actionImage.attr("data-animate", results[i].images.fixed_height.url);
 
-            //adds image into "images" div prior to or above previous image
-            $("#gif-container").prepend(actionImage);
+            actionDiv.append(p);
+            actionDiv.append(actionImage);
+            $("#gif-container").prepend(actionDiv);
             console.log(response);
         }
     });
 
 }
 
+$("#gif-container").on("click", ".gif", function() {
+    var state = $(this).attr("data-state");
+    var stillURL = $(this).attr("data-still");
+    var animatedURL = $(this).attr("data-animate");
+
+    if (state === "still") {
+        $(this).attr("src", animatedURL); 
+        $(this).attr("data-state", "animate");
+
+      } else {
+        $(this).attr("src", stillURL);
+        $(this).attr("data-state", "still");
+      }
+});
+
+
 function renderButtons() {
 
-    // Deletes the actions prior to adding new actions
-    // (this is necessary otherwise you will have repeat buttons)
+    // Deletes the actions prior to adding new actions so we don't have repeats
     $("#buttons-view").empty();
 
     // Loops through the array of topics
     for (var i = 0; i < topics.length; i++) {
 
         // Then dynamicaly generates buttons for each movie in the array
-        // This code $("<button>") is all jQuery needs to create the beginning and end tag. (<button></button>)
         var newButton = $("<button>");
-        // Adds a class of movie to our button
+        // Adds a class of action to our button
         newButton.addClass("action");
         // Added a data-attribute
         newButton.attr("data-name", topics[i]);
         // Provided the initial button text
         newButton.text(topics[i]);
+        
         // Added the button to the buttons-view div
         $("#buttons-view").append(newButton);
+        //Adds CSS styling to the buttons
+        $(".action").css({"width": "200px", "height": "35px", "background-color": "darkcyan", "color": "white"});
     }
 }
 
-// This function handles events where the submit button is clicked
+// Adds new buttons to array and calls RenderButtons to display them all
 $("#add-action").on("click", function (event) {
     event.preventDefault();
     // This line of code will grab the input from the textbox
@@ -68,7 +92,6 @@ $("#add-action").on("click", function (event) {
     // The action from the textbox is then added to our array
     topics.push(newAction);
 
-    // Calling renderButtons which handles the processing of our movie array
     renderButtons();
 
 });

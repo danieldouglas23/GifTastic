@@ -4,3 +4,31 @@ form,
 input {
   margin: 10px;
 }
+
+#action-form {
+    float: right;
+}
+
+body {
+    background: url("gravel.png")
+}
+
+#add-action {
+    background-color: darkcyan;
+    color: white;
+    height: 30px;
+    width: 75px;
+}
+
+#action-form {
+    font-weight: bold;
+}
+
+.action-div {
+    display: inline-block;
+}
+
+.rating-text {
+    text-align: center;
+    font-weight: bold;
+}
